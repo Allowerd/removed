@@ -1,0 +1,33 @@
+/asset/tpl/search/index.tpl после 25 строки удалены следующие строки
+
+<? if (count($this->data['search/index']['news'])>0) {?>
+  <div class="result-block">
+    <div class="result-block-inner">
+      <a href="<?=$v['link']?>" class="image-link"><img src="<?=$v['cover']?>" alt="<?=$v['name']?>"></a>
+      <div class="content"><div class="date"><?=$v['date']?></div>
+      <a href="<?=$v['link']?>" class="link"><?=$v['name']?></a>
+      <a href="<?=$v['link']?>" class="btn">Подробнее</a>
+      </div>              
+    </div>
+  </div>
+<? } ?>
+
+
+
+
+/core/mod/mod_search.php удалены следующие строки:
+
+//потом среди новостей
+$Db->query = "SELECT * FROM `mod_news` WHERE `act`='1' AND (`name` LIKE ('%" . $word . "%') OR `text` LIKE ('%" . $word . "%')) ORDER BY `name` LIMIT 100";
+$Db->query();
+if (mysql_num_rows($Db->lQueryResult) > 0) {
+    while (($lRes = mysql_fetch_assoc($Db->lQueryResult)) && ($search_results_count < 10)) {
+        $lRes['link'] = '/news/' . $lRes['id'] . '-' . $lRes['anchor'] . '.html';
+        $result['news'][] = $lRes;
+    }
+}
+
+и замена строки:
+if ((count($result['goods']) == 0) && (count($result['news']) == 0)) {
+на
+if (count($result['goods']) == 0) {
